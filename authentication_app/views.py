@@ -1,4 +1,4 @@
-from authentication_app.authentication import auth
+from authentication_app.base_auth_classes.authentication import auth
 from django.http import HttpResponse
 import json
 
