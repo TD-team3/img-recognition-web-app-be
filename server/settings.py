@@ -25,7 +25,7 @@ SECRET_KEY = '&qkt^#yc1c)b7ugzprqo$-6wk8kq_(%dy1@h0j)#=lew-2euk@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['imgrecognitionteam3.pythonanywhere.com']
 
 
 # Application definition
