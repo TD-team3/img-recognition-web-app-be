@@ -1,4 +1,4 @@
-from token import Token
+from .token import Token
 
 # creating Authentication class
 # this will be used by the login function that will be created in views.py
