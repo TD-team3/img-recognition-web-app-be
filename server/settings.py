@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,8 @@ SECRET_KEY = '&qkt^#yc1c)b7ugzprqo$-6wk8kq_(%dy1@h0j)#=lew-2euk@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['imgrecognitionteam3.pythonanywhere.com']
+ALLOWED_HOSTS = ['imgrecognitionteam3.pythonanywhere.com',
+                 '127.0.0.1']
 
 
 # Application definition
@@ -37,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authentication_app'  # added
+    'authentication_app',  # added
+    'upload_app',  # added
 ]
 
 MIDDLEWARE = [
@@ -120,3 +123,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 APPEND_SLASH=False
+
