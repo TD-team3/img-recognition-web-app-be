@@ -2,7 +2,7 @@ from imageai.Prediction import ImagePrediction
 
 
 class ImgRecognition:
-    MODEL_PATH = "/home/imgrecognitionteam3/img-recognition-dataset/resnet50_model.h5"
+    MODEL_PATH = "/home/imgrecognitionteam3/img-recognition-dataset/resnet.h5"
 
     def __init__(self):
         self.prediction = ImagePrediction()
@@ -17,8 +17,8 @@ class ImgRecognition:
     # @return -> string img prediction
     def recognize_image(self, img_file):
         try:
-            prediction = self.prediction.predictImage(img_file, result_count=1)
-            return prediction[0]
+            prediction = self.prediction.predictImage(img_file.name, result_count=1)
+            return prediction[0][0]
 
         except Exception as ex:
             # if there is any error, raise a ValueError
