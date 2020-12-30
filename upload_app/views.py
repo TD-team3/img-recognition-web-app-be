@@ -16,6 +16,7 @@ def upload(request):
             token = json_obj['token']
             if request.method == 'POST' and auth.is_token_valid(username, token):
                 my_image_uploader = ImgUploadHandler()
+                # ADD TRY EXCEPT TO SEE IF PASSED FILES RESPECT SIZE AND FORMAT !!!
                 my_image_uploader.process_images(request.FILES, 'myfile')  # SECOND PARAMETER MAY CHANGE !!!
                 my_image_recognizer = ImgRecognitionHandler()
                 my_image_recognizer.store_recognitions(my_image_uploader)

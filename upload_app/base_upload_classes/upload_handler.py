@@ -10,6 +10,7 @@ class ImgUploadHandler:
         # sent_files is a request.FILES dictionary
         # name_of_container is the name='...' attribute of the HTML form/input tag
         for file in sent_files.getlist(name_of_container):
+            # ADD CHECK FORMAT AND SIZE OF IMAGE
             img_temp = NamedTemporaryFile()
             img_temp.write(file.read())
             img_temp.flush()
