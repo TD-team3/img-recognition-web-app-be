@@ -16,6 +16,12 @@ class ImgRecognition:
     # @param img_file -> img file to recognize
     # @return -> string img prediction
     def recognize_image(self, img_file):
-        prediction = self.prediction.predictImage(img_file, result_count=1)
-        return prediction[0]
+        try:
+            prediction = self.prediction.predictImage(img_file, result_count=1)
+            return prediction[0]
+
+        except Exception as ex:
+            # if there is any error, raise a ValueError
+            raise ValueError(ex.args)
+
 
