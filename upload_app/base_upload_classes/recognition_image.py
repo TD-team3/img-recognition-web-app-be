@@ -2,7 +2,7 @@ from imageai.Prediction import ImagePrediction
 
 
 class ImgRecognition:
-    MODEL_PATH = "/home/imgrecognitionteam3/img-recognition-dataset/resnet.h5"
+    MODEL_PATH = "/home/imgrecognitionteam3/img-recognition-dataset/resnet50_model.h5"
 
     def __init__(self):
         self.prediction = ImagePrediction()
