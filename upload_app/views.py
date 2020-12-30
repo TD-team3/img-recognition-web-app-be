@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 import json
 from authentication_app.base_auth_classes.authentication import auth
-from .base_upload_classes.upload import ImageUploader
-from .base_upload_classes.recognition import ImageRecognizer
+from .base_upload_classes.upload_handler import ImgUploadHandler
+from .base_upload_classes.recognition_handler import ImgRecognitionHandler
 
 
 def upload(request):
@@ -15,10 +15,10 @@ def upload(request):
             username = json_obj['username']
             token = json_obj['token']
             if request.method == 'POST' and auth.is_token_valid(username, token):
-                my_image_uploader = ImageUploader()
+                my_image_uploader = ImgUploadHandler()
                 my_image_uploader.process_images(request.FILES, 'myfile')  # SECOND PARAMETER MAY CHANGE !!!
-                my_image_recognizer = ImageRecognizer()
-                my_image_recognizer.recognize_images(my_image_uploader)
+                my_image_recognizer = ImgRecognitionHandler()
+                my_image_recognizer.store_recognitions(my_image_uploader)
 
                 final_result = my_image_recognizer.recognition_dictionary
                 # WRITE JSON BASED ON FINAL RESULT !!!

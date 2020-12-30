@@ -1,7 +1,7 @@
 from django.core.files.temp import NamedTemporaryFile
 
 
-class ImageUploader:
+class ImgUploadHandler:
 
     def __init__(self):
         self.uploaded_images = []
