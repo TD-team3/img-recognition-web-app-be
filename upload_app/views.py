@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed
 import json
 from authentication_app.base_auth_classes.authentication import auth
 from .base_upload_classes.recognition_handler import ImgRecognitionHandler
@@ -18,13 +18,17 @@ def upload(request):
                     image_recognizer = ImgRecognitionHandler()
                     # ADD TRY EXCEPT TO SEE IF PASSED FILES RESPECT SIZE AND FORMAT !!!
 
-                    # SECOND PARAMETER MAY CHANGE !!!
-                    json_file_str = image_recognizer.process_images(request.FILES, 'photos')
+                    if 'photos' in request.FILES:
+                        try:
+                            json_file_str = image_recognizer.process_images(request.FILES, 'photos')
+                        except TypeError:
+                            return HttpResponseNotAllowed('error: format must be either jpg or png')
 
-                    return HttpResponse(json_file_str, status=200)
+                        return HttpResponse(json_file_str, status=200)  # recognitions are sent here
+
                 else:
-                    return HttpResponseForbidden("Session expired or user is not logged!")
+                    return HttpResponseForbidden("Session expired or user not logged in!")
 
     return HttpResponseBadRequest("Bad request")
 
-# note that 'myfile' is the name= attribute of the form/input TAG in the HTML, and may change
+# note that 'photos' will have to be the name= attribute of the form/input TAG in the HTML
