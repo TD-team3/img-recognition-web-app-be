@@ -4,6 +4,8 @@ from .recognition_image import ImgRecognition
 
 class ImgRecognitionHandler:
 
+    allowed_formats = ['.jpg', '.jpeg', '.png']
+
     def __init__(self):
         # output dictionary
         self.recognition_output = {}
@@ -16,6 +18,9 @@ class ImgRecognitionHandler:
 
         for file in sent_files.getlist(name_of_container):
             # ADD CHECK FORMAT AND SIZE OF IMAGE
+            if file.name[-4:].lower() not in ImgRecognitionHandler.allowed_formats and \
+                    file.name[-3:].lower() not in ImgRecognitionHandler.allowed_formats:
+                raise TypeError('format of the image is not valid')
 
             img_temp = NamedTemporaryFile()
 
