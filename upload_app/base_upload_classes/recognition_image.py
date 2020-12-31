@@ -19,7 +19,11 @@ class ImgRecognition:
     def recognize_image(self, img_file):
         try:
             prediction = self.prediction.predictImage(img_file.name, result_count=1)
-            return prediction[0][0]
+            prediction_str = prediction[0][0]
+
+            # remove "_" from result string
+            prediction_str = prediction_str.replace("_", " ")
+            return prediction_str
 
         except Exception as ex:
             # if there is any error, raise a ValueError
