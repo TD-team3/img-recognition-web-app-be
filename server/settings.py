@@ -26,8 +26,7 @@ SECRET_KEY = '&qkt^#yc1c)b7ugzprqo$-6wk8kq_(%dy1@h0j)#=lew-2euk@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['imgrecognitionteam3.pythonanywhere.com',
-                 '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,5 +124,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-APPEND_SLASH=False
+APPEND_SLASH = False
 
