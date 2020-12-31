@@ -25,6 +25,9 @@ def upload(request):
 
                     # check if there is the 'photos' argument in request arguments
                     if 'photos' in request.FILES:
+                        list_of_photos = request.FILES.getlist('photos')
+                        if len(list_of_photos) > 10:
+                            return HttpResponseBadRequest('a maximum of 10 images is allowed for recognition.')
                         try:
                             json_file_str = image_recognizer.process_images(request.FILES, 'photos')
                         except Exception as ex:
