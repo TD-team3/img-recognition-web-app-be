@@ -10,7 +10,7 @@ def login(request):
         # converting the json data into a json object
         json_obj = json.loads(json_str)
         if 'username' in json_obj and 'password' in json_obj:
-            username = json_obj['username']
+            username = json_obj['username'].lower()
             password = json_obj['password']
             # the following stores a boolean and eventually stores a generated token
             auth_result = auth.is_auth_data_valid(username, password)
