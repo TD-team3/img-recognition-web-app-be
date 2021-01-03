@@ -24,14 +24,14 @@ def upload(request):
                     image_recognizer = ImgRecognitionHandler()
 
                     # check if there is the 'photos' argument in request arguments
-                    if 'photos' in request.FILES:
+                    if 'photos[0]' in request.FILES:
                         try:
                             json_file_str = image_recognizer.process_images(request.FILES, 'photos')
                         except Exception as ex:
                             return HttpResponse(ex.args, status=405)
 
-                        # If all is ok, send the recognition json
-                        return HttpResponse(json_file_str, status=200)
+                    # If all is ok, send the recognition json
+                    return HttpResponse(json_file_str, status=200)
 
                 else:
                     # auth data not valid!
