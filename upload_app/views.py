@@ -24,7 +24,7 @@ def upload(request):
                     image_recognizer = ImgRecognitionHandler()
 
                     # check if there is the 'photos' argument in request arguments
-                    if 'photos' in request.FILES:
+                    if 'photos[0]' in request.FILES:
                         list_of_photos = request.FILES.getlist('photos')
                         if len(list_of_photos) > 10:
                             return HttpResponseBadRequest('a maximum of 10 images is allowed for recognition.')
