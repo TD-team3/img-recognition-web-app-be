@@ -7,7 +7,7 @@ from .token import Token
 
 
 class Authentication:
-    USERNAME = 'TDteam3'
+    USERNAME = 'tdteam3'
     PASSWORD = 'whatever'
     
     def __init__(self):
