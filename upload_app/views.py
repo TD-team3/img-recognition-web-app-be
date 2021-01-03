@@ -15,7 +15,7 @@ def upload(request):
 
             # check if the request contain authentication data
             if 'username' in json_obj and 'token' in json_obj:
-                username = json_obj['username'].lower()
+                username = json_obj['username']
                 token = json_obj['token']
 
                 # check authentication data

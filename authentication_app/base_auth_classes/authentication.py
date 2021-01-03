@@ -14,7 +14,7 @@ class Authentication:
         self.token = {}
 
     def is_auth_data_valid(self, username, password):
-        if username == Authentication.USERNAME and password == Authentication.PASSWORD:
+        if username.lower() == Authentication.USERNAME and password == Authentication.PASSWORD:
             token_str = Token.generate_token(username, password)
             # generated token string gets saved as value of the username key of the token attribute
             self.token[username] = token_str
