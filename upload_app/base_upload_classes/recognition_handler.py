@@ -21,9 +21,10 @@ class ImgRecognitionHandler:
     def process_images(self, sent_files, name_of_container):
         #
         # name_of_container is the name='...' attribute of the HTML form/input tag
+        files = [sent_files.get('photos[%d]' % i)for i in range(0, len(sent_files))]
 
         # iterate every file
-        for file in sent_files.getlist(name_of_container):
+        for file in files:
 
             # check image format using endswith with a tuple of possible extensions
             if not file.name.lower().endswith(('.jpg', '.jpeg', '.png')):
