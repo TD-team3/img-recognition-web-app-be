@@ -14,7 +14,8 @@ class Authentication:
         self.token = {}
 
     def is_auth_data_valid(self, username, password):
-        if username.lower() == Authentication.USERNAME and password == Authentication.PASSWORD:
+        username = username.lower()
+        if username == Authentication.USERNAME and password == Authentication.PASSWORD:
             token_str = Token.generate_token(username, password)
             # generated token string gets saved as value of the username key of the token attribute
             self.token[username] = token_str
@@ -23,6 +24,7 @@ class Authentication:
             return False
 
     def is_token_valid(self, username, token_str):
+        username = username.lower()
         if username in self.token:
             if token_str == self.token[username]:
                 if not Token.is_token_expired(token_str):
