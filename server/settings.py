@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authentication_app',  # added
     'upload_app',  # added
     'corsheaders', # added cors
+    'regitration_app', # added
 ]
 
 MIDDLEWARE = [
