@@ -1,5 +1,6 @@
 from .token import Token
 from registration_app.models import Users
+from django.core.exceptions import MultipleObjectsReturned
 
 # creating Authentication class
 # this will be used by the login function that will be created in views.py
@@ -8,9 +9,6 @@ from registration_app.models import Users
 
 
 class Authentication:
-    # USERNAME = 'tdteam3'
-    # PASSWORD = 'whatever'
-    
     def __init__(self):
         self.token = {}
 
@@ -18,10 +16,17 @@ class Authentication:
         # get user from db
         try:
             user = Users.objects.get(mail=username)
+        except Users.DoesNotExist:
+            print("User does not exist!")
+            return False
+
+        except MultipleObjectsReturned:
+            print("Internal server error! There are more users with the same username!")
+            return False
+
         except Exception as ex:
             print("Authentication method, exception in is_auth_data_valid!")
             print(ex.args)
-            return False
 
         # check if password is valid
         if user.password == password:
