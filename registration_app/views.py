@@ -17,9 +17,9 @@ def signup(request):
 
                 # checking if email already exists in database
                 check_mail = Users.objects.filter(mail=mail)
-                # if the email filter leads to some result, then user already exists in database
+                # if the email filter leads to some remanasult, then user already exists in database
                 if check_mail.count() != 0:
-                    return HttpResponseNotAllowed('email already registered.')
+                    return HttpResponse('email already registered.', status=405)
 
                 user = Users(
                     mail=mail,
