@@ -15,9 +15,13 @@ def signup(request):
                 surname = json_obj['surname']
                 password = json_obj['password']
 
+                # ensuring no field is empty
+                if not mail or not name or not surname or not password:
+                    return HttpResponse('empty fields are not allowed', status=405)
+
                 # checking if email already exists in database
                 check_mail = Users.objects.filter(mail=mail)
-                # if the email filter leads to some remanasult, then user already exists in database
+                # if the email filter leads to some result, then user already exists in database
                 if check_mail.count() != 0:
                     return HttpResponse('email already registered.', status=405)
 
