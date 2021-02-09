@@ -25,7 +25,7 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('login/', login, name='login'),
     path('upload/', upload, name='upload'),
-    path('upload_test', upload_test, name='upload_test'),
+    path('upload_test/', upload_test, name='upload_test'),
     path('signup/', signup, name='signup'),
 ]
 
