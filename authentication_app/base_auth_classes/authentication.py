@@ -35,7 +35,7 @@ class AuthenticationJwt:
         return False
 
     def generate_token_payload(self, username):
-        payload = {'mail': username, 'iat': datetime.now, 'exp': datetime.now() + timedelta(minutes=120)}
+        payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.now() + timedelta(minutes=120)}
         # consider adding the id of that database user
         return payload
 
