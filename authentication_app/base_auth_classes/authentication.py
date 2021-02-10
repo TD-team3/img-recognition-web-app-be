@@ -1,14 +1,15 @@
-from .token import Token
 from registration_app.models import Users
 from django.core.exceptions import MultipleObjectsReturned
+from datetime import datetime, timedelta
+
 
 # creating Authentication class
 # this will be used by the login function that will be created in views.py
-# this class will include methods for checking username and password 
+# this class will include methods for checking username and password
 # the class will also have to store the token
 
 
-class Authentication:
+class AuthenticationJwt:
     def __init__(self):
         self.token = {}
 
@@ -30,21 +31,19 @@ class Authentication:
 
         # check if password is valid
         if user.password == password:
-            token_str = Token.generate_token(username, password)
-            # generated token string gets saved as value of the username key of the token attribute
-            self.token[username] = token_str
             return True
         return False
 
-    def is_token_valid(self, username, token_str):
-        if username in self.token:
-            if token_str == self.token[username]:
-                if not Token.is_token_expired(token_str):
-                    return True
-        return False
+    def generate_token_payload(self, username):
+        payload = {'mail': username, 'iat': datetime.now, 'exp': datetime.now() + timedelta(minutes=120)}
+        # consider adding the id of that database user
+        return payload
+
+    def save_token(self, username, encoded_jwt):
+        self.token[username] = encoded_jwt  # the token will be saved as JWT standard encoded token
 
 
 # global variable
-auth = Authentication()
+auth = AuthenticationJwt()
 
 
