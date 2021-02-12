@@ -1,6 +1,8 @@
 from registration_app.models import Users
 from django.core.exceptions import MultipleObjectsReturned
 from datetime import datetime, timedelta
+import jwt
+import json
 
 
 # creating Authentication class
@@ -10,6 +12,9 @@ from datetime import datetime, timedelta
 
 
 class AuthenticationJwt:
+
+    SECRET_KEY = 'TD_team_3_Secret_Key'
+
     def __init__(self):
         self.token = {}
 
@@ -34,13 +39,21 @@ class AuthenticationJwt:
             return True
         return False
 
-    def generate_token_payload(self, username):
+    def generate_and_save_jwt(self, username):
         payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.now() + timedelta(minutes=120)}
-        # consider adding the id of that database user
-        return payload
+        # the payload will be encoded and added as a key
+        encoded_jwt = jwt.encode(payload, AuthenticationJwt.SECRET_KEY, algorithm="HS256")
+        jwt_in_json = {'token': encoded_jwt}
+        json_str = json.dumps(jwt_in_json)
+        # saving jwt into database
+        self.save_token(username, encoded_jwt)
 
-    def save_token(self, username, encoded_jwt):
-        self.token[username] = encoded_jwt  # the token will be saved as JWT standard encoded token
+        return json_str
+
+    @staticmethod
+    def save_token(username, jwt_token):
+        # it saves jwt onto database
+        Users.objects.filter(mail=username).update(token=jwt_token)
 
 
 # global variable
