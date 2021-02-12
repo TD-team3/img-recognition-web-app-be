@@ -1,14 +1,20 @@
-from .token import Token
 from registration_app.models import Users
 from django.core.exceptions import MultipleObjectsReturned
+from datetime import datetime, timedelta
+import jwt
+import json
+
 
 # creating Authentication class
 # this will be used by the login function that will be created in views.py
-# this class will include methods for checking username and password 
+# this class will include methods for checking username and password
 # the class will also have to store the token
 
 
-class Authentication:
+class AuthenticationJwt:
+
+    SECRET_KEY = 'TD_team_3_Secret_Key'
+
     def __init__(self):
         self.token = {}
 
@@ -30,21 +36,27 @@ class Authentication:
 
         # check if password is valid
         if user.password == password:
-            token_str = Token.generate_token(username, password)
-            # generated token string gets saved as value of the username key of the token attribute
-            self.token[username] = token_str
             return True
         return False
 
-    def is_token_valid(self, username, token_str):
-        if username in self.token:
-            if token_str == self.token[username]:
-                if not Token.is_token_expired(token_str):
-                    return True
-        return False
+    def generate_and_save_jwt(self, username):
+        payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.now() + timedelta(minutes=120)}
+        # the payload will be encoded and added as a key
+        encoded_jwt = jwt.encode(payload, AuthenticationJwt.SECRET_KEY, algorithm="HS256")
+        jwt_in_json = {'token': encoded_jwt}
+        json_str = json.dumps(jwt_in_json)
+        # saving jwt into database
+        self.save_token(username, encoded_jwt)
+
+        return json_str
+
+    @staticmethod
+    def save_token(username, jwt_token):
+        # it saves jwt onto database
+        Users.objects.filter(mail=username).update(token=jwt_token)
 
 
 # global variable
-auth = Authentication()
+auth = AuthenticationJwt()
 
 

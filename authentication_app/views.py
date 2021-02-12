@@ -12,12 +12,12 @@ def login(request):
         if 'username' in json_obj and 'password' in json_obj:
             username = json_obj['username'].lower()
             password = json_obj['password']
-            # the following stores a boolean and eventually stores a generated token
-            auth_result = auth.is_auth_data_valid(username, password)
-            if auth_result:
-                json_token = '{"token":"' + auth.token[username] + '"}'
+            # the following checks if username is present in database and if password is correct
+            if auth.is_auth_data_valid(username, password):
+                # the following creates a token based on username and current time
+                encoded_jwt = auth.generate_and_save_jwt(username)
 
-                return HttpResponse(json_token, status=200, content_type='application/json')
+                return HttpResponse(encoded_jwt, status=200, content_type='application/json')
             else:
                 return HttpResponse('authentication not valid', status=401)
 
