@@ -43,9 +43,10 @@ class AuthenticationJwt:
         payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.now() + timedelta(minutes=120)}
         # the payload will be encoded and added as a key
         encoded_jwt = jwt.encode(payload, AuthenticationJwt.SECRET_KEY, algorithm="HS256")
-        json_str = "{'token':'" + encoded_jwt + "'}"  # replaced json dumps
+        json_str = json.dumps({'token': encoded_jwt.decode('utf-8')})
+        #json_str = "{'token':'" + encoded_jwt.decode('utf-8') + "'}"  # replaced json dumps
         # saving jwt into database
-        #self.save_token(username, encoded_jwt)
+        AuthenticationJwt.save_token(username, encoded_jwt)
 
         return json_str
 
