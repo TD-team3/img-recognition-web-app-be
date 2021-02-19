@@ -15,12 +15,8 @@ def login(request):
             password = json_obj['password']
             # the following checks if username is present in database and if password is correct
             if Users.is_auth_data_valid(username, password):
-                # creates and saves a JWT token based on username and current time
-                encoded_jwt = TokenJwt.generate_and_save_jwt(username)
-                # builds json with jwt inside it
-                json_str = json.dumps({'token': str(encoded_jwt)})
-
-                return HttpResponse(json_str, status=200, content_type='application/json')
+                # once checked, a method gets invoked to return the json with the jwt inside it
+                return HttpResponse(TokenJwt.json_jwt(username), status=200, content_type='application/json')
             else:
                 return HttpResponse('authentication not valid', status=401)
 

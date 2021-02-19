@@ -2,11 +2,12 @@ from server.settings import SECRET_KEY
 from registration_app.models import Users
 from datetime import datetime, timedelta
 import jwt
-
+import json
 
 # creating Authentication class
 # this will be used by the login function created in views.py
 # this class will include methods for generating a token following the JWT standard
+
 
 class TokenJwt:
 
@@ -19,6 +20,14 @@ class TokenJwt:
         Users.save_token(username, encoded_jwt)
 
         return encoded_jwt
+
+    @staticmethod
+    def json_jwt(username):
+        # creates and saves a JWT token based on username and current time
+        encoded_jwt = TokenJwt.generate_and_save_jwt(username)
+        # builds json with jwt inside it
+        json_str = json.dumps({'token': str(encoded_jwt)})
+        return json_str
 
 
 
