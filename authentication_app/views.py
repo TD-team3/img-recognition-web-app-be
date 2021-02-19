@@ -1,4 +1,5 @@
-from authentication_app.base_auth_classes.authentication import auth
+from authentication_app.base_auth_classes.authentication import TokenJwt
+from registration_app.views import Users
 from django.http import HttpResponse
 import json
 
@@ -13,11 +14,9 @@ def login(request):
             username = json_obj['username'].lower()
             password = json_obj['password']
             # the following checks if username is present in database and if password is correct
-            if auth.is_auth_data_valid(username, password):
-                # the following creates a token based on username and current time
-                encoded_jwt = auth.generate_and_save_jwt(username)
-
-                return HttpResponse(encoded_jwt, status=200, content_type='application/json')
+            if Users.is_auth_data_valid(username, password):
+                # once checked, a method gets invoked to return the json with the jwt inside it
+                return HttpResponse(TokenJwt.json_jwt(username), status=200, content_type='application/json')
             else:
                 return HttpResponse('authentication not valid', status=401)
 

@@ -1,6 +1,5 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 import json
-from authentication_app.base_auth_classes.authentication import auth
 from .base_upload_classes.recognition_handler import ImgRecognitionHandler
 
 
