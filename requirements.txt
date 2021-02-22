@@ -1,0 +1,8 @@
+# Library needed to run the application
+
+django              -> pip install django
+django-cors-headers -> pip install django-cors-headers
+PyJwt               -> pip install pyjwt
+python-dotenv       -> pip install -U python-dotenv
+imageai             -> pip install imageai --upgrade
+
