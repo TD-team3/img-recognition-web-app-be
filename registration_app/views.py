@@ -29,6 +29,22 @@ def signup(request):
     return HttpResponseBadRequest()
 
 
+def send_mail_password(request):
+    if request.method == 'POST':
+        json_str = request.POST.get('data', '')
+        if json_str:
+            json_obj = json.loads(json_str)
+            if 'mail' in json_obj:
+                mail = json_obj['mail'].lower()
+                print(mail)
+                status, desc = UsersManager.send_password(mail)
+                print(status)
+                if status:
+                    return HttpResponse("ok")
+                else:
+                    return HttpResponse(desc, status=405)
+
+    return HttpResponseBadRequest("bad request")
 
 
 
