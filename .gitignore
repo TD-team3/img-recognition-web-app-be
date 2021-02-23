@@ -1,2 +1,5 @@
 __pycache__/
+.idea
 db.sqlite3
+/server/.env
+/upload_app/base_upload_classes/resnet50.h5
