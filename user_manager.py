@@ -2,6 +2,8 @@ from registration_app.models import Users
 from django.core.exceptions import MultipleObjectsReturned
 from authentication_app.base_auth_classes.authentication import TokenJwt
 
+import os
+
 
 class UsersManager:
 
@@ -61,6 +63,8 @@ class UsersManager:
 
     @staticmethod
     def login_user(mail, password):
+        key = os.environ.get('TEST')
+        print(key)
         # the following checks if username is present in database and if password is correct
         status, desc = UsersManager.is_auth_data_valid(mail, password)
 
