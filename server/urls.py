@@ -19,7 +19,7 @@ from authentication_app.views import login
 from upload_app.views import upload
 from upload_app.views import upload_test
 from registration_app.views import signup
-
+from registration_app.views import send_mail_password
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('upload/', upload, name='upload'),
     path('upload_test/', upload_test, name='upload_test'),
     path('signup/', signup, name='signup'),
+    path('recovery_password/', send_mail_password, name='send_mail_password')
 ]
 

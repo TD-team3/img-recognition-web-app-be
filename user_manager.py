@@ -1,6 +1,10 @@
 from registration_app.models import Users
 from django.core.exceptions import MultipleObjectsReturned
 from authentication_app.base_auth_classes.authentication import TokenJwt
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 import os
 
@@ -63,8 +67,6 @@ class UsersManager:
 
     @staticmethod
     def login_user(mail, password):
-        key = os.environ.get('TEST')
-        print(key)
         # the following checks if username is present in database and if password is correct
         status, desc = UsersManager.is_auth_data_valid(mail, password)
 
@@ -76,3 +78,34 @@ class UsersManager:
             return True, TokenJwt.jwt_to_json_jwt(jwt_token)
         else:
             return False, 'authentication not valid'
+
+    @staticmethod
+    def send_password(mail):
+        try:
+            user = Users.objects.get(mail=mail)
+        except Users.DoesNotExist:
+            print("User does not exist")
+            return False, 'User does not exist'
+
+        password = user.password
+
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "Support - Recovery Password"
+        message["From"] = os.environ.get('HELP_MAIL')
+        message["To"] = user.mail
+
+        text_message = os.environ.get("TEXT_MAIL").format(name=user.name, password=user.password)
+        html_message = os.environ.get("HTML_MAIL").format(name=user.name, password=user.password)
+        message.attach(MIMEText(text_message, "plain"))
+        message.attach(MIMEText(html_message, "html"))
+
+        port = 465  # For SSL
+        password = os.environ.get('HELP_MAIL_PASSWORD')
+        # Create a secure SSL context
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+            server.login(os.environ.get('HELP_MAIL'), password)
+            server.sendmail(os.environ.get('HELP_MAIL'), user.mail, message.as_string())
+
+        return True, "ok"
