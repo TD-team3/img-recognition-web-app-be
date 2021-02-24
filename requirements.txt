@@ -1,0 +1,6 @@
+Library needed to run the code:
+- Django 3.1.5
+- django-cors-header
+- imageai (pip install imageai --upgrade)
+- PyJWT 2.0.1
+- python-dotenv 0.15.0
