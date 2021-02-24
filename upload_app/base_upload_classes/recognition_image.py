@@ -1,8 +1,9 @@
 from imageai.Prediction import ImagePrediction
+import os
 
 
 class ImgRecognition:
-    MODEL_PATH = "/home/imgrecognitionteam3/img-recognition-dataset/resnet50_model.h5"
+    MODEL_PATH = os.environ.get('RECOGNITION_MODEL_PATH')
     #MODEL_PATH = "D:/Programmazione/Python/img_recognition_test/resnet.h5"
 
     def __init__(self):

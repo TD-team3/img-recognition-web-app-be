@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
-from registration_app.models import Users
+from user_manager import UsersManager
 import json
 
 
@@ -19,26 +19,32 @@ def signup(request):
                 if not mail or not name or not surname or not password:
                     return HttpResponse('empty fields are not allowed', status=405)
 
-                # checking if email already exists in database
-                check_mail = Users.objects.filter(mail=mail)
-                # if the email filter leads to some result, then user already exists in database
-                if check_mail.count() != 0:
-                    return HttpResponse('email already registered.', status=405)
-
-                user = Users(
-                    mail=mail,
-                    name=name,
-                    surname=surname,
-                    password=password
-                )
-                user.save()
-                return HttpResponse('Account created!', status=200)
-
-                # check if can use method User.objects.create_user(mail, ....)
+                # create new user
+                is_success, desc = UsersManager.add_new_user(mail, name, surname, password)
+                if is_success:
+                    return HttpResponse('Account created!', status=200)
+                else:
+                    return HttpResponse(desc, status=405)
 
     return HttpResponseBadRequest()
 
 
+def send_mail_password(request):
+    if request.method == 'POST':
+        json_str = request.POST.get('data', '')
+        if json_str:
+            json_obj = json.loads(json_str)
+            if 'mail' in json_obj:
+                mail = json_obj['mail'].lower()
+                print(mail)
+                status, desc = UsersManager.send_password(mail)
+                print(status)
+                if status:
+                    return HttpResponse("ok")
+                else:
+                    return HttpResponse(desc, status=405)
+
+    return HttpResponseBadRequest("bad request")
 
 
 
