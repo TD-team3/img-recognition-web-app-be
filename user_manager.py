@@ -66,6 +66,11 @@ class UsersManager:
         Users.objects.filter(mail=mail).update(token=jwt_token)
 
     @staticmethod
+    def retrieve_token(mail):
+        user = Users.objects.get(mail=mail)
+        return user.token
+
+    @staticmethod
     def login_user(mail, password):
         # the following checks if username is present in database and if password is correct
         status, desc = UsersManager.is_auth_data_valid(mail, password)
@@ -109,3 +114,11 @@ class UsersManager:
             server.sendmail(os.environ.get('HELP_MAIL'), user.mail, message.as_string())
 
         return True, "ok"
+
+    @staticmethod
+    def is_user_in_db(username):
+        check = Users.objects.filter(mail=username)
+        if check.count() != 0:
+            return True
+        else:
+            return False
