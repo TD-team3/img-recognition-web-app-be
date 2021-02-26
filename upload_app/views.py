@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 import json
 from .base_upload_classes.recognition_handler import ImgRecognitionHandler
+from user_manager import UsersManager
+from authentication_app.base_auth_classes.authentication import TokenJwt
 
 
 def upload(request):
@@ -17,9 +19,12 @@ def upload(request):
                 username = json_obj['username'].lower()
                 token = json_obj['token']
 
-                # check authentication data
-                #if auth.is_token_valid(username, token):
+            if not UsersManager.is_user_in_db(username):
+                return HttpResponseForbidden("Username not found!")
 
+            # validate token
+            is_token_valid, message = TokenJwt.is_token_valid(username, token)
+            if is_token_valid:
                 image_recognizer = ImgRecognitionHandler()
 
                 # check if there is the 'photos' argument in request arguments
@@ -35,9 +40,9 @@ def upload(request):
                     # If all is ok, send the recognition json
                     return HttpResponse(json_file_str, status=200)
 
-                #else:
-                    # auth data not valid!
-                    #return HttpResponseForbidden("Session expired or user not logged in!")
+            else:
+                # token not valid! Error may be due to 1) session expired or 2) not corresponding or empty token
+                return HttpResponseForbidden(message)
 
     # request argument not valid!
     return HttpResponseBadRequest("Bad request")
