@@ -28,6 +28,9 @@ class TokenJwt:
 
     @staticmethod
     def decode_json_jwt(encoded_jwt):
+        # removing the b of bytes in case the jwt is returned as bytes
+        if encoded_jwt[0] == "b" and encoded_jwt[1] == "'" and encoded_jwt[-1] == "'":
+            encoded_jwt = encoded_jwt[2:-1]
         # decoding the encoded jwt string
         decoded = jwt.decode(encoded_jwt, os.environ.get('SECRET_KEY'), algorithms=["HS256"])
         return decoded
