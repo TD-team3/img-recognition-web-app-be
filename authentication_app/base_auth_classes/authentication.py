@@ -14,7 +14,7 @@ class TokenJwt:
     @staticmethod
     def generate_jwt(username):
         # adding iat and exp keys will automatize the expiration check
-        payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.utcnow() + timedelta(seconds=20)}
+        payload = {'mail': username, 'iat': datetime.now(), 'exp': datetime.utcnow() + timedelta(minutes=120)}
         # the payload will be encoded and added as a key
         encoded_jwt = jwt.encode(payload, os.environ.get('SECRET_KEY'), algorithm="HS256")
         # saves encoded jwt onto database by calling a method of the Users model
