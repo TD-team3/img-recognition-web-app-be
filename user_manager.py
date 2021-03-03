@@ -57,6 +57,14 @@ class UsersManager:
         return False, ''
 
     @staticmethod
+    def is_user_in_db(username):
+        check = Users.objects.filter(mail=username)
+        if check.count() != 0:
+            return True
+        else:
+            return False
+
+    @staticmethod
     def save_token(mail, jwt_token):
         """
         @param mail --> str
@@ -69,6 +77,24 @@ class UsersManager:
     def retrieve_token(mail):
         user = Users.objects.get(mail=mail)
         return user.token
+
+    @staticmethod
+    def delete_token(username, token):
+        try:
+            user = Users.objects.get(token=token)
+            #print(user)
+        except Users.DoesNotExist:
+            raise ValueError('no such token on database')
+        except Users.MultipleObjectsReturned:
+            # if the code gets here it means an empty token was passed
+            raise ValueError('token not valid')
+        # check the association mail-token
+        if user.mail == username and user.token == token:
+            # cleaning token on database, leaving an empty field
+            user.token = ''
+            user.save()
+        else:
+            raise ValueError('username/token not valid')
 
     @staticmethod
     def login_user(mail, password):
@@ -115,10 +141,3 @@ class UsersManager:
 
         return True, "ok"
 
-    @staticmethod
-    def is_user_in_db(username):
-        check = Users.objects.filter(mail=username)
-        if check.count() != 0:
-            return True
-        else:
-            return False
