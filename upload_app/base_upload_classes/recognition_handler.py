@@ -1,6 +1,7 @@
 from django.core.files.temp import NamedTemporaryFile
 from .recognition_image import ImgRecognition
 
+
 # This class in an Handler for do the image recognition
 
 
@@ -18,10 +19,10 @@ class ImgRecognitionHandler:
     # @param "name_of_container" is the http request image data argument
     #
     # @return -> Json data
+
     def process_images(self, sent_files, name_of_container):
-        #
         # name_of_container is the name='...' attribute of the HTML form/input tag
-        files = [sent_files.get('photos[%d]' % i)for i in range(0, len(sent_files))]
+        files = [sent_files.get('photos[%d]' % i) for i in range(0, len(sent_files))]
 
         # iterate every file
         for file in files:
@@ -36,7 +37,6 @@ class ImgRecognitionHandler:
             img_temp.flush()
 
             # check image dimension, files cannot be larger than 10mb
-            print(img_temp.tell())
             if img_temp.tell() > 10000000:
                 raise TypeError('Image file is too big')
 
