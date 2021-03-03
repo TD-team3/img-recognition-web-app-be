@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from authentication_app.views import login
+from authentication_app.views import logout
 from upload_app.views import upload
 from upload_app.views import upload_test
 from registration_app.views import signup
@@ -27,6 +28,7 @@ urlpatterns = [
     path('upload/', upload, name='upload'),
     path('upload_test/', upload_test, name='upload_test'),
     path('signup/', signup, name='signup'),
-    path('recovery_password/', send_mail_password, name='send_mail_password')
+    path('recovery_password/', send_mail_password, name='send_mail_password'),
+    path('logout/', logout, name='logout'),
 ]
 
