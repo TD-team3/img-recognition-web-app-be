@@ -3,11 +3,9 @@ from django.core.exceptions import MultipleObjectsReturned
 
 
 class Users(models.Model):
-
-    # ID primary key field is added automatically by Django
+    mail = models.EmailField(max_length=254, primary_key=True)
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
-    mail = models.EmailField(max_length=254)
     password = models.CharField(max_length=15)
     token = models.CharField(max_length=250, default='')
 
