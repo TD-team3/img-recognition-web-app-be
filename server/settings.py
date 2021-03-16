@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'upload_app',  # added
     'corsheaders', # added cors
     'registration_app', # added
+    'search_history_app', # added
 ]
 
 MIDDLEWARE = [
