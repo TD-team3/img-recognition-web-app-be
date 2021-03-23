@@ -13,3 +13,7 @@ class History(models.Model):
     class Meta:
         db_table = "history"
 
+    def __str__(self):
+        return 'id:{0}, rcg_output:{1}, datetime:{2}, mail:{3}'\
+            .format(self.pk, self.rcg_output, self.datetime, self.mail, self.mail)
+
