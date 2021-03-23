@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from authentication_app.base_auth_classes.authentication import TokenJwt
 from datetime import datetime
-from .search_helper import SearchHelper
 from user_manager import UsersManager
+from search_history_app.base_search_history_classes.history_manager import HistoryManager
 import json
 
 
@@ -43,7 +43,7 @@ def get_user_history_searches(request):
                 if not is_token_valid:
                     return HttpResponseForbidden(message)
 
-                json_result = SearchHelper.get_user_searches(username, search_from, search_to)
+                json_result = HistoryManager.get_user_searches(username, search_from, search_to)
 
                 return HttpResponse(json_result)
 

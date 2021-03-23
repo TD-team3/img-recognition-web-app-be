@@ -19,7 +19,6 @@ def upload(request):
             if 'username' in json_obj and 'token' in json_obj:
                 username = json_obj['username'].lower()
                 token = json_obj['token']
-
             if not UsersManager.is_user_in_db(username):
                 return HttpResponseForbidden("Username not found!")
 
