@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from user_manager import UsersManager
 import json
+from search_history_app.base_search_history_classes.history_manager import HistoryManager
 
 
 def signup(request):
@@ -22,6 +23,10 @@ def signup(request):
                 # create new user
                 is_success, desc = UsersManager.add_new_user(mail, name, surname, password)
                 if is_success:
+                    # create user folder for search history storage
+                    HistoryManager.create_user_folder(user_folder_name=mail,
+                                                      parent_folder_name=HistoryManager.FOLDER_NAME)
+
                     return HttpResponse('Account created!', status=200)
                 else:
                     return HttpResponse(desc, status=405)
