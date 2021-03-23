@@ -16,8 +16,9 @@ class HistoryManager:
     @staticmethod
     def create_user_folder(user_folder_name, parent_folder_name):
         user_path = os.path.join(BASE_DIR, parent_folder_name, user_folder_name)
+        print(user_path)
         try:
-            os.mkdir(user_path)
+            os.makedirs(user_path)
             # if folder already exists, skip
         except FileExistsError as error:
             print(error)
