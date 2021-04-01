@@ -3,6 +3,7 @@ import json
 from .base_upload_classes.recognition_handler import ImgRecognitionHandler
 from user_manager import UsersManager
 from authentication_app.base_auth_classes.authentication import TokenJwt
+from search_history_app.base_search_history_classes.history_manager import HistoryManager
 
 
 def upload(request):
@@ -18,7 +19,6 @@ def upload(request):
             if 'username' in json_obj and 'token' in json_obj:
                 username = json_obj['username'].lower()
                 token = json_obj['token']
-
             if not UsersManager.is_user_in_db(username):
                 return HttpResponseForbidden("Username not found!")
 
@@ -26,19 +26,20 @@ def upload(request):
             is_token_valid, message = TokenJwt.is_token_valid(username, token)
             if is_token_valid:
                 image_recognizer = ImgRecognitionHandler()
+                incoming_files = request.FILES
 
-                # check if there is the 'photos' argument in request arguments
-                if 'photos[0]' in request.FILES:
-                    list_of_photos = request.FILES.getlist('photos')
-                    if len(list_of_photos) > 10:
-                        return HttpResponseBadRequest('a maximum of 10 images is allowed for recognition.')
-                    try:
-                        json_file_str = image_recognizer.process_images(request.FILES, 'photos')
-                    except Exception as ex:
-                        return HttpResponse(ex.args, status=405)
+                if len(incoming_files) > 10:
+                    return HttpResponseBadRequest('a maximum of 10 images is allowed for recognition.')
+                try:
+                    json_recognitions_str = image_recognizer.process_images(incoming_files, 'photos')
+                except Exception as ex:
+                    return HttpResponse(ex.args, status=405)
 
-                    # If all is ok, send the recognition json
-                    return HttpResponse(json_file_str, status=200)
+                # following method saves search & recognitions on db, resizes images and saves them on server
+                HistoryManager.store_search(json_recognitions_str, username, incoming_files)
+
+                # send back the json of recognitions (image name --> recognition)
+                return HttpResponse(json_recognitions_str, status=200)
 
             else:
                 # token not valid! Error may be due to 1) session expired or 2) not corresponding or empty token

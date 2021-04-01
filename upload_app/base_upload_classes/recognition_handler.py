@@ -20,9 +20,9 @@ class ImgRecognitionHandler:
     #
     # @return -> Json data
 
-    def process_images(self, sent_files, name_of_container):
+    def process_images(self, sent_files, key_name):
         # name_of_container is the name='...' attribute of the HTML form/input tag
-        files = [sent_files.get('photos[%d]' % i) for i in range(0, len(sent_files))]
+        files = [sent_files.get('%s[%d]' % (key_name, i)) for i in range(0, len(sent_files))]
 
         # iterate every file
         for file in files:

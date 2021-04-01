@@ -21,6 +21,7 @@ from upload_app.views import upload
 from upload_app.views import upload_test
 from registration_app.views import signup
 from registration_app.views import send_mail_password
+from search_history_app.views import get_user_history_searches
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('recovery_password/', send_mail_password, name='send_mail_password'),
     path('logout/', logout, name='logout'),
+    path('get_searches/', get_user_history_searches, name='get_searches')
 ]
 
